@@ -1,5 +1,5 @@
-#ifndef _LIB_ASSETO_CORSSA_UDP_H
-#define _LIB_ASSETO_CORSSA_UDP_H
+#ifndef _LIB_ASSETTO_CORSSA_UDP_H
+#define _LIB_ASSETTO_CORSSA_UDP_H
 
 #include <stdint.h>
 
@@ -136,6 +136,4 @@ int acudp_client_subscribe(acudp_handle *, acudp_client_suscription_t);
 
 
 
-
-
-#endif  // _LIB_ASSETO_CORSSA_UDP_H
+#endif  // _LIB_ASSETTO_CORSSA_UDP_H
