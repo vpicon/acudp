@@ -213,9 +213,8 @@ void _acudp_lap_from_data(acudp_lap_t *data, const char *buf)
     _read_data_int(  &data->lap,                    buf + 4);
     _read_data_string(data->driver_name,            buf + 2*4);
     _read_data_string(data->car_name,               buf + 100 + 2*4);
-    _read_data_int(  &data->time,                   buf + 2*100 + 2*4);
+    _read_data_int(  &data->time_ms,                buf + 2*100 + 2*4);
 }
-
 
 
 int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *data)
@@ -236,4 +235,16 @@ int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *data)
 
     _acudp_lap_from_data(data, buf);
     return ACUDP_OK;
+}
+
+
+int acudp_send_dismiss(acudp_handle *acudp)
+{
+    // Dismiss setup
+    acudp_setup_t dismiss = {
+        .identifier=1,
+        .version=1,
+        .operation_id=ACUDP_SETUP_DISMISS
+    };
+    return _acudp_send_setup_struct(acudp, &dismiss);
 }

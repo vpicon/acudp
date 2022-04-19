@@ -155,5 +155,12 @@ int acudp_read_update_event(acudp_handle *, acudp_car_t *);
  */
 int acudp_read_spot_event(acudp_handle *, acudp_lap_t *);
 
+/**
+ * Sends final dismiss to AC server which desuscribes the
+ * client from receiving events fomr AC server.
+ * Returns ACUDP_OK on success, error otherwise.
+ */
+int acudp_send_dismiss(acudp_handle *acudp);
+
 
 #endif  // _LIB_ASSETTO_CORSSA_UDP_H
