@@ -26,13 +26,6 @@ typedef struct acudp_setup {
 } acudp_setup_t;
 
 
-typedef enum acudp_client_suscription {
-    UPDATE = 1,
-    SPOT = 2,
-    NONE
-} acudp_client_suscription_t;
-
-
 typedef struct acudp_setup_response {
     char    car_name[50];
     char    driver_name[50];
@@ -43,7 +36,14 @@ typedef struct acudp_setup_response {
 } acudp_setup_response_t;
 
 
-typedef struct acudp_telemetry {
+typedef enum acudp_client_suscription {
+    UPDATE = 1,
+    SPOT = 2,
+    NONE
+} acudp_client_suscription_t;
+
+
+typedef struct acudp_car {
     char identifier;
     int  size;
 
@@ -94,7 +94,7 @@ typedef struct acudp_telemetry {
     float car_position_normalized;
     float car_slope;
     float car_coordinates[3];
-} acudp_telemetry_t;
+} acudp_car_t;
 
 
 typedef struct acudp_lap {
