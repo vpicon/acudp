@@ -4,9 +4,9 @@ and Assetto Corsa.
 
 The PC running Assetto Corsa will be referred as the *ACServer*. Also the following
 are assumed:
-    - `int` are 32 bit little-endian integers
-    - `float` are 32 bit floating point numbers
-    - `bool` are 8 bit boolean value
+- `int` are 32 bit little-endian integers
+- `float` are 32 bit floating point numbers
+- `bool` are 8 bit boolean value
 
 ## 1. Connection Setup to AC via UDP: Handshake
 
@@ -40,13 +40,13 @@ The fields work as follows:
 
 In summary, for the first handshaking phase your application will need to send the following structured data to ACServer
 
-    ```c
-    struct setup {
-        .identifier = 1,
-        .version = 1,
-        .operationId= 0
-    };
-    ```
+```c
+struct setup {
+    .identifier = 1,
+    .version = 1,
+    .operationId= 0
+};
+```
 
 1.2) AC Remote Telemetry Server Responds to the client
 
