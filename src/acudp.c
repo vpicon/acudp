@@ -51,7 +51,7 @@ int acudp_init(acudp_handle **handle_ptr)
         return ACUDP_SOCK;
     }
 
-    acudp->suscription = NONE;
+    acudp->suscription = ACUDP_SUSCRIPTION_NONE;
 
     *handle_ptr = acudp;
     return ACUDP_OK;
@@ -84,7 +84,6 @@ int _acudp_send_setup_struct(acudp_handle *acudp,
 
     return ACUDP_OK;
 }
-
 
 /**
  * Reads buffer formatted as 100 byte len array of shorts,
@@ -162,7 +161,18 @@ int acudp_send_handshake(acudp_handle *acudp,
 int acudp_client_subscribe(acudp_handle *acudp,
         acudp_client_suscription_t suscription)
 {
-    (void) acudp;
-    (void) suscription;
-    return ACUDP_ERROR;
+    if (suscription != ACUDP_SUSCRIPTION_UPDATE
+            && suscription != ACUDP_SUSCRIPTION_SPOT) {
+        return ACUDP_INV_ARG;
+    }
+
+    int operation_id = (suscription == ACUDP_SUSCRIPTION_UPDATE)
+                     ? ACUDP_SETUP_SUBSCRIBE_UPDATE
+                     : ACUDP_SETUP_SUBSCRIBE_SPOT;
+    acudp_setup_t setup = {
+        .identifier=1,
+        .version=1,
+        .operation_id=operation_id
+    };
+    return _acudp_send_setup_struct(acudp, &setup);
 }
