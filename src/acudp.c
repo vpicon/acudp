@@ -28,7 +28,7 @@ enum acudp_setup_operation {
 struct acudp_handle_s {
     struct sockaddr_in server_address;
     int sockfd;
-    acudp_client_suscription_t suscription;
+    acudp_client_subscription_t subscription;
 };
 
 
@@ -51,7 +51,7 @@ int acudp_init(acudp_handle **handle_ptr)
         return ACUDP_SOCK;
     }
 
-    acudp->suscription = ACUDP_SUSCRIPTION_NONE;
+    acudp->subscription = ACUDP_SUBSCRIPTION_NONE;
 
     *handle_ptr = acudp;
     return ACUDP_OK;
@@ -159,14 +159,14 @@ int acudp_send_handshake(acudp_handle *acudp,
 
 
 int acudp_client_subscribe(acudp_handle *acudp,
-        acudp_client_suscription_t suscription)
+        acudp_client_subscription_t subscription)
 {
-    if (suscription != ACUDP_SUSCRIPTION_UPDATE
-            && suscription != ACUDP_SUSCRIPTION_SPOT) {
+    if (subscription != ACUDP_SUBSCRIPTION_UPDATE
+            && subscription != ACUDP_SUBSCRIPTION_SPOT) {
         return ACUDP_INV_ARG;
     }
 
-    int operation_id = (suscription == ACUDP_SUSCRIPTION_UPDATE)
+    int operation_id = (subscription == ACUDP_SUBSCRIPTION_UPDATE)
                      ? ACUDP_SETUP_SUBSCRIBE_UPDATE
                      : ACUDP_SETUP_SUBSCRIBE_SPOT;
     acudp_setup_t setup = {
@@ -174,5 +174,34 @@ int acudp_client_subscribe(acudp_handle *acudp,
         .version=1,
         .operation_id=operation_id
     };
-    return _acudp_send_setup_struct(acudp, &setup);
+
+    int ret = _acudp_send_setup_struct(acudp, &setup);
+    if (ret == ACUDP_OK)  // Update subscription state on success
+        acudp->subscription = subscription;
+
+    return ret;
+}
+
+
+int acudp_read_update_event(acudp_handle *acudp, acudp_car_t *data)
+{
+    // Check proper subscription state
+    if (acudp->subscription != ACUDP_SUBSCRIPTION_UPDATE)
+        return ACUDP_CLI_SUB;
+
+    // Read sockfd buffer for packet containing car_t data
+    ssize_t nread = recvfrom(acudp->sockfd,
+            data, sizeof(*data),
+            0, NULL, NULL);
+
+    if (nread != sizeof(*data)) {
+        return ACUDP_ERROR;
+    }
+
+    // Check format of incoming data
+    if (data->identifier != 'a' || data->size != sizeof(acudp_car_t)) {
+        return ACUDP_FMT;
+    }
+
+    return ACUDP_OK;
 }

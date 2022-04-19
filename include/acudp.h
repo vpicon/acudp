@@ -15,7 +15,9 @@ enum acudp_errors {
     ACUDP_OK = 0,      // Success
     ACUDP_ERROR,       // Generic error
     ACUDP_INV_ARG,     // Invalid argument
+    ACUDP_CLI_SUB,     // Client not subscribed accordingly
     ACUDP_SOCK,        // Error opening socket
+    ACUDP_FMT,         // Data format error
 };
 
 
@@ -36,11 +38,11 @@ typedef struct acudp_setup_response {
 } acudp_setup_response_t;
 
 
-typedef enum acudp_client_suscription {
-    ACUDP_SUSCRIPTION_UPDATE = 1,
-    ACUDP_SUSCRIPTION_SPOT = 2,
-    ACUDP_SUSCRIPTION_NONE
-} acudp_client_suscription_t;
+typedef enum acudp_client_subscription {
+    ACUDP_SUBSCRIPTION_UPDATE = 1,
+    ACUDP_SUBSCRIPTION_SPOT = 2,
+    ACUDP_SUBSCRIPTION_NONE
+} acudp_client_subscription_t;
 
 
 typedef struct acudp_car {
@@ -128,13 +130,21 @@ int acudp_exit(acudp_handle *acudp);
 int acudp_send_handshake(acudp_handle *acudp, acudp_setup_response_t *resp);
 
 /**
- * Subscribes the client to the AC server as ACUDP_SUSCRIPTION_UPDATE 
- * to get car info updates in real time, or as ACUDP_SUSCRIPION_SPOT 
+ * Subscribes the client to the AC server as ACUDP_SUBSCRIPTION_UPDATE 
+ * to get car info updates in real time, or as ACUDP_SUBSCRIPION_SPOT 
  * to get lap info.
  * Returns ACUDP_OK on success, error otherwise.
  */
-int acudp_client_subscribe(acudp_handle *, acudp_client_suscription_t);
+int acudp_client_subscribe(acudp_handle *, acudp_client_subscription_t);
 
+/**
+ * Reads for incoming update event from AC Server, containing car
+ * telemetry data, and stores it into the given car_t pointer.
+ * Required for client subscription to be ACUDP_SUBSCRIPTION_UPDATE,
+ * by calling on acudp_client_subscribe function.
+ * Returns ACUDP_OK on success, error otherwise.
+ */
+int acudp_read_update_event(acudp_handle *, acudp_car_t *);
 
 
 #endif  // _LIB_ASSETTO_CORSSA_UDP_H
