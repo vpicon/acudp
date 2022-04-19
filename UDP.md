@@ -50,7 +50,7 @@ struct setup {
 After sending the structured data in section 1.1, your application will receive the following struct as response:
 
 ```c
-struct handshackerResponse{
+struct setupResponse {
     char carName[50];
     char driverName[50];
     int identifier;
@@ -75,10 +75,10 @@ This data is necessary to understand which driver are we connecting to.
 Again the client must send the following structured data, the same from section 1.1 :
 
 ```c
-struct handshaker{
-        int identifier;
-        int version;
-        int operationId;
+struct setup {
+    int identifier;
+    int version;
+    int operationId;
 };
 ```
 
@@ -168,10 +168,10 @@ struct RTLap {
 A client to dimiss himself he must send the following package (the same from session 1.1)
 
 ```c
-struct handshaker{
-    int identifier;
-    int version;
-    int operationId;
+struct setup dismiss_setup {
+    .identifier=1
+    .version=1
+    .operationId=3
 };
 ```
 
