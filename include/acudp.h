@@ -1,5 +1,5 @@
-#ifndef _LIB_ASSETTO_CORSSA_UDP_H
-#define _LIB_ASSETTO_CORSSA_UDP_H
+#ifndef _LIB_ASSETTO_CORSA_UDP_H
+#define _LIB_ASSETTO_CORSA_UDP_H
 
 #include <stdint.h>
 
@@ -163,4 +163,4 @@ int acudp_read_spot_event(acudp_handle *, acudp_lap_t *);
 int acudp_send_dismiss(acudp_handle *acudp);
 
 
-#endif  // _LIB_ASSETTO_CORSSA_UDP_H
+#endif  // _LIB_ASSETTO_CORSA_UDP_H

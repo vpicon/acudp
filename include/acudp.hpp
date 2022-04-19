@@ -1,5 +1,5 @@
-#ifndef _LIB_ASSETTO_CORSSA_UDP_HPP
-#define _LIB_ASSETTO_CORSSA_UDP_HPP
+#ifndef _LIB_ASSETTO_CORSA_UDP_HPP
+#define _LIB_ASSETTO_CORSA_UDP_HPP
 
 extern "C" {
 #include "acudp.h"
@@ -76,4 +76,4 @@ class ACUDP {
 
 } // namespace acudp
 
-#endif  // _LIB_ASSETTO_CORSSA_UDP_HPP
+#endif  // _LIB_ASSETTO_CORSA_UDP_HPP

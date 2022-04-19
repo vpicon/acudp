@@ -1,4 +1,4 @@
-# AssettoCorssa UDP Interface
+# AssettoCorsa UDP Interface
 The document helps you to set up UDP socket comunication between your application 
 and Assetto Corsa. 
 
