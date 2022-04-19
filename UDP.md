@@ -160,7 +160,7 @@ struct RTLap {
     int lap;
     char driverName[50];
     char carName[50];
-    int time;
+    int time_millis;
 };
 ```
 

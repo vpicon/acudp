@@ -205,3 +205,35 @@ int acudp_read_update_event(acudp_handle *acudp, acudp_car_t *data)
 
     return ACUDP_OK;
 }
+
+
+void _acudp_lap_from_data(acudp_lap_t *data, const char *buf)
+{
+    _read_data_int(  &data->car_identifier_number,  buf);
+    _read_data_int(  &data->lap,                    buf + 4);
+    _read_data_string(data->driver_name,            buf + 2*4);
+    _read_data_string(data->car_name,               buf + 100 + 2*4);
+    _read_data_int(  &data->time,                   buf + 2*100 + 2*4);
+}
+
+
+
+int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *data)
+{
+    // Check proper subscription state
+    if (acudp->subscription != ACUDP_SUBSCRIPTION_SPOT)
+        return ACUDP_CLI_SUB;
+
+    // Read sockfd buffer for packet containing car_t data
+    char buf[100*2 + 4*3];   // Lap data buffer
+    ssize_t nread = recvfrom(acudp->sockfd,
+            buf, sizeof(buf),
+            0, NULL, NULL);
+
+    if (nread != sizeof(buf)) {
+        return ACUDP_ERROR;
+    }
+
+    _acudp_lap_from_data(data, buf);
+    return ACUDP_OK;
+}

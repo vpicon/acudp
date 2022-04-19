@@ -104,7 +104,7 @@ typedef struct acudp_lap {
     int  lap;
     char driver_name[50];
     char car_name[50];
-    int  time;
+    int  time_ms;
 } acudp_lap_t;
 
 
@@ -145,6 +145,15 @@ int acudp_client_subscribe(acudp_handle *, acudp_client_subscription_t);
  * Returns ACUDP_OK on success, error otherwise.
  */
 int acudp_read_update_event(acudp_handle *, acudp_car_t *);
+
+/**
+ * Reads for incoming spot event from AC Server, containing lap
+ * telemetry data, and stores it into the given lap_t pointer.
+ * Required for client subscription to be ACUDP_SUBSCRIPTION_SPOT,
+ * by calling on acudp_client_subscribe function.
+ * Returns ACUDP_OK on success, error otherwise.
+ */
+int acudp_read_spot_event(acudp_handle *, acudp_lap_t *);
 
 
 #endif  // _LIB_ASSETTO_CORSSA_UDP_H
