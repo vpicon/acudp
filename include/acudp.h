@@ -37,9 +37,9 @@ typedef struct acudp_setup_response {
 
 
 typedef enum acudp_client_suscription {
-    UPDATE = 1,
-    SPOT = 2,
-    NONE
+    ACUDP_SUSCRIPTION_UPDATE = 1,
+    ACUDP_SUSCRIPTION_SPOT = 2,
+    ACUDP_SUSCRIPTION_NONE
 } acudp_client_suscription_t;
 
 
@@ -128,8 +128,9 @@ int acudp_exit(acudp_handle *acudp);
 int acudp_send_handshake(acudp_handle *acudp, acudp_setup_response_t *resp);
 
 /**
- * Subscribes the client to the AC server as UPDATE to get car info 
- * updates in real time, or as SPOT to get lap info.
+ * Subscribes the client to the AC server as ACUDP_SUSCRIPTION_UPDATE 
+ * to get car info updates in real time, or as ACUDP_SUSCRIPION_SPOT 
+ * to get lap info.
  * Returns ACUDP_OK on success, error otherwise.
  */
 int acudp_client_subscribe(acudp_handle *, acudp_client_suscription_t);
