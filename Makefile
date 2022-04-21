@@ -19,7 +19,7 @@ OBJECTS := $(patsubst src/%.c, bin/%.o, $(SOURCES))
 
 
 # Rules
-.PHONY: lib bindirs examples
+.PHONY: lib bindirs examples clean
 all: bindirs $(LIBRARY) examples 
 
 bindirs:
@@ -35,3 +35,8 @@ bin/%.o: src/%.c $(HEADERS)
 
 examples: 
 	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk
+
+
+clean:
+	-rm $(OBJECTS) $(LIBRARY)
+	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk clean
