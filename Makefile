@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Wshadow -pedantic 
+CFLAGS = -Wall -Wextra -Werror -Wshadow -pedantic -O3
 CFLAGS += -I'include/'
 
 AR = ar  # archiver
@@ -19,8 +19,8 @@ OBJECTS := $(patsubst src/%.c, bin/%.o, $(SOURCES))
 
 
 # Rules
-.PHONY: lib bindirs examples
-all: bindirs $(LIBRARY) examples 
+.PHONY: lib bindirs examples test
+all: bindirs $(LIBRARY) examples test
 
 bindirs:
 	@if [ ! -d 'bin' ]; then mkdir 'bin'; fi
@@ -32,6 +32,8 @@ $(LIBRARY): $(OBJECTS)
 bin/%.o: src/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $< -o $@ -c
 
-
 examples: 
 	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk
+
+examples: 
+	@$(MAKE) --no-print-directory --directory='test' -f Makefile.mk
