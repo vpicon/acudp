@@ -11,4 +11,4 @@ $(EXECS): %.exe: %.c
 
 .PHONY:	clean
 clean:
-	-rm $(EXECS) example_plus
+	-rm $(EXECS) 

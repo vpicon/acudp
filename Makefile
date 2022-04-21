@@ -41,3 +41,4 @@ test:
 clean:
 	-rm $(OBJECTS) $(LIBRARY)
 	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk clean
+	@$(MAKE) --no-print-directory --directory='test'     -f Makefile.mk clean
