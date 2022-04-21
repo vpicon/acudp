@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "acudp.h"
+#include "format.h"
 
 
 const short ACSERVER_DEFAULT_PORT = 9996;
@@ -82,42 +83,6 @@ int _acudp_send_setup_struct(acudp_handle *acudp,
 }
 
 
-/**
- * Reads buffer formatted as 100 byte len array of shorts,
- * terminated by 0x0025, into dest as string.
- */
-void _read_data_string(char *dest, const char *buf) {
-    int nread = 0;
-    while (nread < 50) {
-        if (*buf == 0x25) {
-            *dest = '\0';
-            break;
-        }
-
-        *dest++ = *buf++; // copy buf into dest
-        buf++;            // skip 0x00
-        nread++;
-    }
-
-    if (nread == 50) *--dest = '\0'; // Always nul terminate
-}
-
-
-void _read_data_int(int *n, const char *buf) {
-    memcpy(n, buf, sizeof(int));
-}
-
-
-void _acudp_setup_response_from_data(acudp_setup_response_t *resp, const char *buf)
-{
-    _read_data_string(resp->car_name,    buf);
-    _read_data_string(resp->driver_name, buf + 100);
-    _read_data_int(  &resp->identifier,  buf + 2 * 100);
-    _read_data_int(  &resp->version,     buf + 2 * 100 + 4);
-    _read_data_string(resp->track_name,  buf + 2 * 100 + 2 * 4);
-}
-
-
 int _acudp_recv_setup_response_struct(acudp_handle *acudp,
         acudp_setup_response_t *resp)
 {
@@ -130,7 +95,7 @@ int _acudp_recv_setup_response_struct(acudp_handle *acudp,
         return ACUDP_ERROR;
     }
 
-    _acudp_setup_response_from_data(resp, buf);
+    format_setup_response_from_data(resp, buf);
 
     return ACUDP_OK;
 }
@@ -203,17 +168,7 @@ int acudp_read_update_event(acudp_handle *acudp, acudp_car_t *data)
 }
 
 
-void _acudp_lap_from_data(acudp_lap_t *data, const char *buf)
-{
-    _read_data_int(  &data->car_identifier_number,  buf);
-    _read_data_int(  &data->lap,                    buf + 4);
-    _read_data_string(data->driver_name,            buf + 2*4);
-    _read_data_string(data->car_name,               buf + 100 + 2*4);
-    _read_data_int(  &data->time_ms,                buf + 2*100 + 2*4);
-}
-
-
-int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *data)
+int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *lap)
 {
     // Check proper subscription state
     if (acudp->subscription != ACUDP_SUBSCRIPTION_SPOT)
@@ -229,7 +184,7 @@ int acudp_read_spot_event(acudp_handle *acudp, acudp_lap_t *data)
         return ACUDP_ERROR;
     }
 
-    _acudp_lap_from_data(data, buf);
+    format_lap_from_data(lap, buf);
     return ACUDP_OK;
 }
 
