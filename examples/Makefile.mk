@@ -10,4 +10,9 @@ $(EXECS): %: %.c
 	$(CC) $(CFLAGS) -I'../include'  $< -o $@ $(LDFLAGS)
 
 example_plus: example_plus.cpp
-	g++ -I'../include' $< -o $@ $(LDFLAGS) 
+	g++ $(CFLAGS) -I'../include' $< -o $@ $(LDFLAGS) 
+
+.PHONY:	clean
+clean:
+	-rm $(EXECS) example_plus
+
