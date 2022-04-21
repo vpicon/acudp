@@ -5,6 +5,12 @@
 
 
 /**
+ * Constants
+ */
+extern const short ACSERVER_DEFAULT_PORT;
+
+
+/**
  * Opaque stucture for the library state handle
  */
 struct acudp_handle_s; 

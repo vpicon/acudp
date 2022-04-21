@@ -8,11 +8,7 @@
 #include "acudp.h"
 
 
-/**
- * Constants
- */
-static const short ACSERVER_PORT = 9996;
-
+const short ACSERVER_DEFAULT_PORT = 9996;
 
 /**
  * Opaque stucture for the library state handle definitions
@@ -42,7 +38,7 @@ int acudp_init(acudp_handle **handle_ptr)
     // Set up the server address
     memset(&acudp->server_address, 0, sizeof(acudp->server_address));
     acudp->server_address.sin_family      = AF_INET;                 // ipv4
-    acudp->server_address.sin_port        = htons(ACSERVER_PORT);
+    acudp->server_address.sin_port        = htons(ACSERVER_DEFAULT_PORT);
     acudp->server_address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);  // server in localhost
 
     // Create a datagram socket in the internet domain and use the // default protocol (UDP).
@@ -85,6 +81,7 @@ int _acudp_send_setup_struct(acudp_handle *acudp,
     return ACUDP_OK;
 }
 
+
 /**
  * Reads buffer formatted as 100 byte len array of shorts,
  * terminated by 0x0025, into dest as string.
@@ -104,7 +101,6 @@ void _read_data_string(char *dest, const char *buf) {
 
     if (nread == 50) *--dest = '\0'; // Always nul terminate
 }
-
 
 
 void _read_data_int(int *n, const char *buf) {
