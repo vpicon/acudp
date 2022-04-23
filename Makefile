@@ -33,7 +33,7 @@ bin/%.o: src/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $< -o $@ -c
 
 python: 
-	@$(MAKE) --no-print-directory --directory='bindings/python' -f Makefile.mk
+	@$(MAKE) --no-print-directory --directory='python-extension' -f Makefile.mk
 
 examples: 
 	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk
@@ -43,6 +43,6 @@ test:
 
 clean:
 	-rm $(OBJECTS) $(LIBRARY)
-	@$(MAKE) --no-print-directory --directory='bindings/python'     -f Makefile.mk clean
+	@$(MAKE) --no-print-directory --directory='python-extension'     -f Makefile.mk clean
 	@$(MAKE) --no-print-directory --directory='examples' -f Makefile.mk clean
 	@$(MAKE) --no-print-directory --directory='test'     -f Makefile.mk clean
