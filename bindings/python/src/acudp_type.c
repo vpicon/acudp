@@ -12,8 +12,7 @@ ACUDP_dealloc(ACUDPObject *self)
 
 
 static PyObject *
-ACUDP_new(PyTypeObject *type,
-        PyObject *UNUSED(args), PyObject *UNUSED(kwds))
+ACUDP_new(PyTypeObject *type, PyObject *UNUSED(args), PyObject *UNUSED(kwds))
 {
     ACUDPObject *self;
     self = (ACUDPObject *) type->tp_alloc(type, 0);
@@ -36,15 +35,20 @@ ACUDP_new(PyTypeObject *type,
 static PyObject *
 ACUDP_send_handshake(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
 {
-    // TODO: is a stub
-    (void) self;
+    acudp_setup_response_t response;
+    int rc = acudp_send_handshake(self->acudp, &response);
+    if (rc != ACUDP_OK) {
+        /* TODO: throw exception; */
+        return NULL;
+    }
+
     return (PyObject *) HandshakeResponse_constructor(
-                Py_BuildValue("s", "Audi"),
-                Py_BuildValue("s", "vpicon98"),
-                1,
-                4,
-                Py_BuildValue("s", "magione"),
-                Py_BuildValue("s", "configs"));
+                Py_BuildValue("s", response.car_name),
+                Py_BuildValue("s", response.driver_name),
+                response.identifier,
+                response.version,
+                Py_BuildValue("s", response.track_name),
+                Py_BuildValue("s", response.track_config));
 }
 
 
