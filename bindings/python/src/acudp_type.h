@@ -10,7 +10,8 @@
 
 typedef struct {
     PyObject_HEAD
-    acudp_handle *acudp;  // inner acudp-library handle
+    acudp_handle *acudp;                       // inner acudp-library handle
+    acudp_client_subscription_t subscription;  // state of client current suscription 
 } ACUDPObject;
 
 extern PyTypeObject ACUDPType;
