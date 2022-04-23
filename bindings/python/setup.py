@@ -11,7 +11,8 @@ module = Extension('acudp',
                     #  include_dirs = ['/usr/local/include'],
                     #  libraries = ['tcl83'],
                     #  library_dirs = ['/usr/local/lib'],
-                    sources = ['src/acudpmodule.c'])
+                    sources = ['src/acudp_module.c', 
+                               'src/acudp_obj.c'])
 
 setup (name = 'acudp',
        version = '0.1',
