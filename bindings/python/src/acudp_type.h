@@ -5,10 +5,12 @@
 #include <Python.h>
 #include <structmember.h>
 
+#include "acudp.h"
+
 
 typedef struct {
     PyObject_HEAD
-    // Type fields
+    acudp_handle *acudp;  // inner acudp-library handle
 } ACUDPObject;
 
 extern PyTypeObject ACUDPType;

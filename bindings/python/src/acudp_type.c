@@ -1,4 +1,7 @@
 #include "acudp_type.h"
+#include "handshake_response_type.h"
+#include "util.h"
+
 
 static void
 ACUDP_dealloc(ACUDPObject *self)
@@ -8,11 +11,39 @@ ACUDP_dealloc(ACUDPObject *self)
 
 
 static PyObject *
+ACUDP_new(PyTypeObject *type,
+        PyObject *UNUSED(args), PyObject *UNUSED(kwds))
+{
+    ACUDPObject *self;
+    self = (ACUDPObject *) type->tp_alloc(type, 0);
+
+    // Initialize acudp library
+    if (self != NULL) {
+        int rc = acudp_init(&self->acudp);
+        if (rc != ACUDP_OK) {
+            acudp_exit(self->acudp);
+            Py_DECREF(self);
+            /* TODO: throw exception; */
+            return NULL;
+        }
+    }
+
+    return (PyObject *) self;
+}
+
+
+static PyObject *
 ACUDP_send_handshake(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
 {
     // TODO: is a stub
     (void) self;
-    return Py_BuildValue("s", "stub");
+    return (PyObject *) HandshakeResponse_constructor(
+                Py_BuildValue("s", "Audi"),
+                Py_BuildValue("s", "vpicon98"),
+                1,
+                4,
+                Py_BuildValue("s", "magione"),
+                Py_BuildValue("s", "configs"));
 }
 
 
@@ -31,8 +62,7 @@ PyTypeObject ACUDPType = {
     .tp_basicsize = sizeof(ACUDPObject),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = PyType_GenericNew,
-    /* .tp_new = HandshakeResponse_new, */
+    .tp_new = ACUDP_new,
     /* .tp_init = (initproc) HandshakeResponse_init, */
     .tp_dealloc = (destructor) ACUDP_dealloc,
     /* .tp_members = HandshakeResponse_members, */
