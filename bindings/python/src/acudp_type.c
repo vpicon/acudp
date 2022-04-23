@@ -6,6 +6,7 @@
 static void
 ACUDP_dealloc(ACUDPObject *self)
 {
+    acudp_exit(self->acudp);
     Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -65,6 +66,5 @@ PyTypeObject ACUDPType = {
     .tp_new = ACUDP_new,
     /* .tp_init = (initproc) HandshakeResponse_init, */
     .tp_dealloc = (destructor) ACUDP_dealloc,
-    /* .tp_members = HandshakeResponse_members, */
     .tp_methods = ACUDP_methods
 };
