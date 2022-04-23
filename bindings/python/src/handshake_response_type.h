@@ -8,7 +8,12 @@
 
 typedef struct {
     PyObject_HEAD
-    // Type fields
+    PyObject *car_name;      // string
+    PyObject *driver_name;   // string
+    int identifier;
+    int version;
+    PyObject *track_name;    // string
+    PyObject *track_config;  // string
 } HandshakeResponseObject;
 
 extern PyTypeObject HandshakeResponseType;
