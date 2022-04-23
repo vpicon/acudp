@@ -18,5 +18,15 @@ typedef struct {
 
 extern PyTypeObject HandshakeResponseType;
 
+// C-level interface constructor for HandshakeResponse objects
+HandshakeResponseObject *HandshakeResponse_constructor(
+    PyObject *car_name,
+    PyObject *driver_name,
+    int identifier,
+    int version,
+    PyObject *track_name,
+    PyObject *track_config);
+
+
 
 #endif  // _ACUDP_PYTHON_EXTENSION_CAR_HANDSHAKE_RESPONSE_TYPE_H

@@ -122,3 +122,53 @@ PyTypeObject HandshakeResponseType = {
     .tp_dealloc = (destructor) HandshakeResponse_dealloc,
     .tp_members = HandshakeResponse_members
 };
+
+
+HandshakeResponseObject *
+HandshakeResponse_constructor(PyObject *car_name,
+                              PyObject *driver_name,
+                              int identifier,
+                              int version,
+                              PyObject *track_name,
+                              PyObject *track_config)
+{
+    HandshakeResponseObject *self;
+
+    // Allocate new object
+    self = (HandshakeResponseObject *) HandshakeResponse_new(
+            &HandshakeResponseType, NULL, NULL);
+    if (!self)
+        return NULL;
+
+    // Initialize object values
+    self->identifier = identifier;
+    self->version = version;
+
+    PyObject *tmp;
+    if (car_name) {
+        tmp = self->car_name;
+        Py_INCREF(car_name);
+        self->car_name = car_name;
+        Py_XDECREF(tmp);
+    }
+    if (driver_name) {
+        tmp = self->driver_name;
+        Py_INCREF(driver_name);
+        self->driver_name = driver_name;
+        Py_XDECREF(tmp);
+    }
+    if (track_config) {
+        tmp = self->track_config;
+        Py_INCREF(track_config);
+        self->track_config = track_config;
+        Py_XDECREF(tmp);
+    }
+    if (track_name) {
+        tmp = self->track_name;
+        Py_INCREF(track_name);
+        self->track_name = track_name;
+        Py_XDECREF(tmp);
+    }
+
+    return self;
+}
