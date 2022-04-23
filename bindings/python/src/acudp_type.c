@@ -6,6 +6,24 @@ ACUDP_dealloc(ACUDPObject *self)
     Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
+
+static PyObject *
+ACUDP_send_handshake(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
+{
+    // TODO: is a stub
+    (void) self;
+    return Py_BuildValue("s", "stub");
+}
+
+
+static PyMethodDef ACUDP_methods[] = {
+    {"send_handshake", (PyCFunction) ACUDP_send_handshake, METH_NOARGS,
+     "Sends handshake to AC Server and returns the response in a HandshakeResponse object"
+    },
+    {NULL}  /* Sentinel */
+};
+
+
 PyTypeObject ACUDPType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "acudp.ACUDP",
@@ -17,20 +35,6 @@ PyTypeObject ACUDPType = {
     /* .tp_new = HandshakeResponse_new, */
     /* .tp_init = (initproc) HandshakeResponse_init, */
     .tp_dealloc = (destructor) ACUDP_dealloc,
-    /* .tp_members = HandshakeResponse_members */
+    /* .tp_members = HandshakeResponse_members, */
+    .tp_methods = ACUDP_methods
 };
-
-/*
-PyTypeObject HandshakeResponseType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "acudp.HandshakeResponse",
-    .tp_doc = PyDoc_STR("Reponse object to Handshake operation"),
-    .tp_basicsize = sizeof(HandshakeResponseObject),
-    .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_new = HandshakeResponse_new,
-    .tp_init = (initproc) HandshakeResponse_init,
-    .tp_dealloc = (destructor) HandshakeResponse_dealloc,
-    .tp_members = HandshakeResponse_members
-};
-*/
