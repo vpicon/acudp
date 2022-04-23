@@ -36,7 +36,7 @@ PyInit_acudp(void)
     }
 
     Py_INCREF(&HandshakeResponseType);
-    if (PyModule_AddObject(m, "HandhsakeResponse", (PyObject *) &HandshakeResponseType) < 0) {
+    if (PyModule_AddObject(m, "HandshakeResponse", (PyObject *) &HandshakeResponseType) < 0) {
         Py_DECREF(&ACUDPType);
         Py_DECREF(m);
         return NULL;
