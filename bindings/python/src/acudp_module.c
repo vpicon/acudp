@@ -1,7 +1,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-#include "acudp_obj.h"
+#include "acudp_type.h"
 
 
 static PyModuleDef acudpmodule = {

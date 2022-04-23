@@ -1,4 +1,4 @@
-#include "acudp_obj.h"
+#include "acudp_type.h"
 
 PyTypeObject ACUDPType = {
     PyVarObject_HEAD_INIT(NULL, 0)
