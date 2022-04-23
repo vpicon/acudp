@@ -90,6 +90,22 @@ ACUDP_subsribe_to_spot(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
 }
 
 
+static PyObject *
+ACUDP_send_dismiss(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
+{
+    int rc = acudp_send_dismiss(self->acudp);
+    if (rc != ACUDP_OK) {
+        /* TODO: throw exception; */
+        return NULL;
+    }
+
+    self->subscription = ACUDP_SUBSCRIPTION_NONE;
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+
 static PyMethodDef ACUDP_methods[] = {
     {"send_handshake", (PyCFunction) ACUDP_send_handshake, METH_NOARGS,
      "Sends handshake to AC Server and returns the response in a HandshakeResponse object"
@@ -99,6 +115,9 @@ static PyMethodDef ACUDP_methods[] = {
     },
     {"subscribe_to_spot", (PyCFunction) ACUDP_subsribe_to_spot, METH_NOARGS,
      "Subscribes this client to AC Server SPOT events"
+    },
+    {"send_dismiss", (PyCFunction) ACUDP_send_dismiss, METH_NOARGS,
+     "Sends dismiss event to AC Server to unsubscribe the client"
     },
     {NULL}  /* Sentinel */
 };
@@ -112,7 +131,7 @@ PyTypeObject ACUDPType = {
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
     .tp_new = ACUDP_new,
-    /* .tp_init = (initproc) HandshakeResponse_init, */
+    /* .tp_init = (initproc) ACUDP_init, */
     .tp_dealloc = (destructor) ACUDP_dealloc,
     .tp_methods = ACUDP_methods
 };
