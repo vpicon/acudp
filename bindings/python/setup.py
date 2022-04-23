@@ -12,7 +12,8 @@ module = Extension('acudp',
                     #  libraries = ['tcl83'],
                     #  library_dirs = ['/usr/local/lib'],
                     sources = ['src/acudp_module.c', 
-                               'src/acudp_type.c'])
+                               'src/acudp_type.c',
+                               'src/handshake_response_type.c'])
 
 setup (name = 'acudp',
        version = '0.1',

@@ -2,6 +2,7 @@
 #include <Python.h>
 
 #include "acudp_type.h"
+#include "handshake_response_type.h"
 
 
 static PyModuleDef acudpmodule = {
@@ -16,7 +17,8 @@ PyMODINIT_FUNC
 PyInit_acudp(void)
 {
     // Initialize Types
-    if (PyType_Ready(&ACUDPType) < 0)
+    if (PyType_Ready(&ACUDPType) < 0
+            || PyType_Ready(&HandshakeResponseType) < 0)
         return NULL;
 
     // Create module
@@ -32,6 +34,14 @@ PyInit_acudp(void)
         Py_DECREF(m);
         return NULL;
     }
+
+    Py_INCREF(&HandshakeResponseType);
+    if (PyModule_AddObject(m, "HandhsakeResponse", (PyObject *) &HandshakeResponseType) < 0) {
+        Py_DECREF(&ACUDPType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
 
     return m;
 }
