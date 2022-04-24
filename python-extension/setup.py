@@ -14,6 +14,7 @@ module = Extension('acudp',
                     library_dirs = ['/usr/local/lib', '../lib'],
                     sources = ['src/acudp_module.c', 
                                'src/acudp_type.c',
+                               'src/car_info_type.c',
                                'src/handshake_response_type.c'])
 
 setup (name = 'acudp',
