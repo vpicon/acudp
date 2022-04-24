@@ -4,6 +4,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <structmember.h>
+#include "acudp.h"
 
 
 typedef struct {
@@ -20,12 +21,7 @@ extern PyTypeObject HandshakeResponseType;
 
 // C-level interface constructor for HandshakeResponse objects
 HandshakeResponseObject *HandshakeResponse_constructor(
-    PyObject *car_name,
-    PyObject *driver_name,
-    int identifier,
-    int version,
-    PyObject *track_name,
-    PyObject *track_config);
+        acudp_setup_response_t *response);
 
 
 

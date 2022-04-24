@@ -125,12 +125,7 @@ PyTypeObject HandshakeResponseType = {
 
 
 HandshakeResponseObject *
-HandshakeResponse_constructor(PyObject *car_name,
-                              PyObject *driver_name,
-                              int identifier,
-                              int version,
-                              PyObject *track_name,
-                              PyObject *track_config)
+HandshakeResponse_constructor(acudp_setup_response_t *response)
 {
     HandshakeResponseObject *self;
 
@@ -141,33 +136,29 @@ HandshakeResponse_constructor(PyObject *car_name,
         return NULL;
 
     // Initialize object values
-    self->identifier = identifier;
-    self->version = version;
-
-    PyObject *tmp;
+    PyObject *car_name = PyUnicode_FromString(response->car_name);
     if (car_name) {
-        tmp = self->car_name;
-        Py_INCREF(car_name);
+        Py_DECREF(self->car_name);
         self->car_name = car_name;
-        Py_XDECREF(tmp);
     }
+    PyObject *driver_name = PyUnicode_FromString(response->driver_name);
     if (driver_name) {
-        tmp = self->driver_name;
-        Py_INCREF(driver_name);
+        Py_DECREF(self->driver_name);
         self->driver_name = driver_name;
-        Py_XDECREF(tmp);
     }
-    if (track_config) {
-        tmp = self->track_config;
-        Py_INCREF(track_config);
-        self->track_config = track_config;
-        Py_XDECREF(tmp);
-    }
+
+    self->identifier = response->identifier;
+    self->version = response->version;
+
+    PyObject *track_name = PyUnicode_FromString(response->track_name);
     if (track_name) {
-        tmp = self->track_name;
-        Py_INCREF(track_name);
+        Py_DECREF(self->track_name);
         self->track_name = track_name;
-        Py_XDECREF(tmp);
+    }
+    PyObject *track_config = PyUnicode_FromString(response->track_config);
+    if (track_config) {
+        Py_DECREF(self->track_config);
+        self->track_config = track_config;
     }
 
     return self;

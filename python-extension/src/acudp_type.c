@@ -45,13 +45,7 @@ ACUDP_send_handshake(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
         return NULL;
     }
 
-    return (PyObject *) HandshakeResponse_constructor(
-                Py_BuildValue("s", response.car_name),
-                Py_BuildValue("s", response.driver_name),
-                response.identifier,
-                response.version,
-                Py_BuildValue("s", response.track_name),
-                Py_BuildValue("s", response.track_config));
+    return (PyObject *) HandshakeResponse_constructor(&response);
 }
 
 
