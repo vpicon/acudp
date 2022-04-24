@@ -8,7 +8,24 @@
 
 typedef struct {
     PyObject_HEAD
-    // Type fields
+
+    float speed_kmh;
+    float car_position_normalized;
+    PyObject *car_coordinates;  // Tuple(float, float, float)
+    PyObject *is_in_pit;        // Bool
+
+    float gas;
+    float brake;
+    float clutch;
+    float engine_rpm;
+    float steer;
+    int   gear;
+    float cg_height;
+
+    int lap_time_millis;
+    int last_lap_millis;
+    int best_lap_millis;
+    int lap_count;
 } CarInfoObject;
 
 extern PyTypeObject CarInfoType;
