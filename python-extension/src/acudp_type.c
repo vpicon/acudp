@@ -1,5 +1,6 @@
 #include "acudp_type.h"
 #include "handshake_response_type.h"
+#include "car_info_type.h"
 #include "util.h"
 
 
@@ -100,6 +101,20 @@ ACUDP_send_dismiss(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
 }
 
 
+static PyObject *
+ACUDP_read_update_event(ACUDPObject *self, PyObject *Py_UNUSED(ignored))
+{
+    acudp_car_t car_info;
+    int rc = acudp_read_update_event(self->acudp, &car_info);
+    if (rc != ACUDP_OK) {
+        /* TODO: throw exception; */
+        return NULL;
+    }
+
+    return (PyObject *) CarInfo_constructor(&car_info);
+}
+
+
 static PyMethodDef ACUDP_methods[] = {
     {"send_handshake", (PyCFunction) ACUDP_send_handshake, METH_NOARGS,
      "Sends handshake to AC Server and returns the response in a HandshakeResponse object"
@@ -109,6 +124,9 @@ static PyMethodDef ACUDP_methods[] = {
     },
     {"subscribe_to_spot", (PyCFunction) ACUDP_subsribe_to_spot, METH_NOARGS,
      "Subscribes this client to AC Server SPOT events"
+    },
+    {"read_update_event", (PyCFunction) ACUDP_read_update_event, METH_NOARGS,
+     "Reads last UPDATE event sent from the AC Server"
     },
     {"send_dismiss", (PyCFunction) ACUDP_send_dismiss, METH_NOARGS,
      "Sends dismiss event to AC Server to unsubscribe the client"
