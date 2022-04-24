@@ -4,6 +4,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <structmember.h>
+#include "acudp.h"
 
 
 typedef struct {
@@ -29,6 +30,9 @@ typedef struct {
 } CarInfoObject;
 
 extern PyTypeObject CarInfoType;
+
+// C-level interface constructor for CarInfo PyObjects
+CarInfoObject *CarInfo_constructor(acudp_car_t *car_info);
 
 
 #endif  // _ACUDP_PYTHON_EXTENSION_CAR_INFO_TYPE_H

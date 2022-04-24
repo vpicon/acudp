@@ -53,8 +53,7 @@ static PyMemberDef CarInfo_members[] = {
     {"is_in_pit", T_BOOL, offsetof(CarInfoObject, is_in_pit),
         READONLY, "is car in pit stop"},
 
-    {"gas", T_FLOAT, offsetof(CarInfoObject, gas),
-        READONLY, "gas"},
+    {"gas", T_FLOAT, offsetof(CarInfoObject, gas), READONLY, "gas"},
     {"brake", T_FLOAT, offsetof(CarInfoObject, brake),
         READONLY, "brake"},
     {"clutch", T_FLOAT, offsetof(CarInfoObject, clutch),
@@ -89,7 +88,49 @@ PyTypeObject CarInfoType = {
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_new = CarInfo_new,
-    /* .tp_init = (initproc) CarInfo_init, */
     .tp_dealloc = (destructor) CarInfo_dealloc,
     .tp_members = CarInfo_members
 };
+
+
+CarInfoObject *CarInfo_constructor(acudp_car_t *car_info)
+{
+    CarInfoObject *self;
+
+    // Allocate new object
+    self = (CarInfoObject *) CarInfo_new(&CarInfoType, NULL, NULL);
+    if (!self)
+        return NULL;
+
+    // Initialize object values
+    self->speed_kmh = car_info->speed_kmh;
+    self->car_position_normalized = car_info->car_position_normalized;
+    PyObject *car_coordinates = Py_BuildValue("(fff)",
+            car_info->car_coordinates[0],
+            car_info->car_coordinates[1],
+            car_info->car_coordinates[2]);
+    if (car_coordinates) {
+        Py_DECREF(self->car_coordinates);
+        self->car_coordinates = car_coordinates;
+    }
+    PyObject *is_in_pit = PyBool_FromLong(car_info->is_in_pit);
+    if (is_in_pit) {
+        Py_DECREF(self->is_in_pit);
+        self->is_in_pit = is_in_pit;
+    }
+
+    self->gas = car_info->gas;
+    self->brake = car_info->brake;
+    self->clutch = car_info->clutch;
+    self->engine_rpm = car_info->engine_rpm;
+    self->steer = car_info->steer;
+    self->gear = car_info->gear;
+    self->cg_height = car_info->cg_height;
+
+    self->lap_time_millis = car_info->lap_time;
+    self->last_lap_millis = car_info->last_lap;
+    self->best_lap_millis = car_info->best_lap;
+    self->lap_count = car_info->lap_count;
+
+    return self;
+}
