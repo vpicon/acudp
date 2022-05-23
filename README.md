@@ -36,7 +36,7 @@ int main()
     // Read car data
     acudp_car_t data;
     acudp_read_update_event(acudp, &data);
-    /* ... proces car data ... */
+    /* ... process car data ... */
 
     // Close communication and exit library
     acudp_send_dismiss(acudp);
@@ -64,7 +64,7 @@ int main()
     
     // Read car data
     auto car = acudp.read_update_event();
-    /* ... proces car data ... */
+    /* ... process car data ... */
 
     // All resources are freed by RAII. No need to manually disconnect.
     return 0;
@@ -88,8 +88,8 @@ if __name__ == "__main__":
     client.subscribe_to_updates()
 
     # Read car data
-    car_info = acudp.read_update_event();
-    /* ... proces car_info data ... */
+    car_info = client.read_update_event();
+    ## ... process car_info data ... ##
 
     # Disconnect client
     client.send_dismiss()
