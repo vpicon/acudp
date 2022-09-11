@@ -11,3 +11,5 @@ add_library(
     src/acudp.c
     src/format.c
 )
+
+add_subdirectory(examples)

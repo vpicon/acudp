@@ -1,0 +1,15 @@
+include_directories(../include)
+
+set(C_EXAMPLES example1 example2 example3 example4)
+foreach(example ${C_EXAMPLES})
+    add_executable(${example} ${example}.c)
+    target_link_libraries(${example} acudp)
+    add_dependencies(${example} acudp)
+endforeach(example ${C_EXAMPLES})
+
+set(CPP_EXAMPLES example_plus)
+foreach(example ${CPP_EXAMPLES})
+    add_executable(${example} ${example}.cpp)
+    target_link_libraries(${example} acudp)
+    add_dependencies(${example} acudp)
+endforeach(example ${C_EXAMPLES})
