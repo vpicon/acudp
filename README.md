@@ -4,13 +4,22 @@ The library is based in a C API, and also provides a C++ wrapper API,
 and a Python extension module.
 
 ## Build
-To compile and build the C/C++ library the it is required to have installed `gcc` and GNU `make` in the system. For the Python extension, `Python3` must be in the system.
+To compile and build the C/C++ library the it is required to have installed `gcc` and `CMake` in the system. 
+For the Python extension, Python3 must be in the system.
 
-To build the entire library, write the command:
+We will build the library in a directory called `build/`.
+```bash
+$ mkdir build; cd build
+$ cmake ..
+$ cmake --build .
+```
+
+To build the Python extension module will go to the directory `python-extension/`,
+and run the Makefile:
 ```bash
 $ make
 ```
-This will actually build the C library binary into the `lib/` directory as a static library. The Python extension module will also be built into the `python-extension/build/` directory.
+The extension assumes that the project library was built in the `build` directory.
 
 
 ## Usage
