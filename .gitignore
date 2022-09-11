@@ -53,3 +53,6 @@ dkms.conf
 
 # Editors
 *.swp
+
+# Output build dir
+build/
