@@ -26,7 +26,7 @@ int main()
 {
     // Init library
     acudp_handle *acudp;
-    acudp_init(&acudp));
+    acudp_init(&acudp, "127.0.0.1", 9996);
 
     // Subscribe to car info events
     acudp_setup_response_t setup_response;
@@ -55,8 +55,8 @@ The example includes the library header in `include/`. And performs the same act
 
 int main() 
 {
-    // Initailise ACUDP instance and connect to server
-    acudp::ACUDP acudp{};
+    // Initialise ACUDP instance and connect to server
+    acudp::ACUDP acudp("127.0.0.1", 9996);
     acudp.send_handshake();
 
     // Subscribe to car info events
@@ -80,7 +80,7 @@ The example performs the same actions as in the previous examples.
 import acudp
 
 if __name__ == "__main__":
-    # Initailise ACUDP instance and connect to server
+    # Initialise ACUDP instance and connect to server
     client = acudp.ACUDP()
     client.send_handshake()
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     client.subscribe_to_updates()
 
     # Read car data
-    car_info = client.read_update_event();
+    car_info = client.read_update_event()
     ## ... process car_info data ... ##
 
     # Disconnect client

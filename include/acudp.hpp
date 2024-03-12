@@ -22,9 +22,9 @@ class ACUDP {
     bool _subscribed;
 
  public:
-    ACUDP() 
+    ACUDP(const char* server_address, short server_port)
     {
-        acudp_init(&_acudp);
+        acudp_init(&_acudp, server_address, server_port);
     }
 
     ~ACUDP() 
