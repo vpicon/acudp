@@ -117,9 +117,11 @@ typedef struct acudp_lap {
 /**
  * Initializes the api, and allocates all necessary resources.
  * Also allocates the acudp_handle returned by argument-value.
+ * server_address is the IP or hostname of the AC server
+ * server_port is the port that the AC server is running on
  * Return ACUDP_OK on success, otherwise the error code.
  */
-int acudp_init(acudp_handle **acudp);
+int acudp_init(acudp_handle **acudp, const char* server_address, short server_port);
 /**
  * Termination routine of the api, disconnects from the server.
  * Also frees the acudp_handle given.

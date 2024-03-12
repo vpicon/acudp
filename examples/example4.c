@@ -27,7 +27,7 @@ int main() {
     int rc;  // return code
 
 
-    if ((rc = acudp_init(&acudp)) != ACUDP_OK)
+    if ((rc = acudp_init(&acudp, "127.0.0.1", 9996)) != ACUDP_OK)
         exit(1);
 
     acudp_setup_response_t setup_response;

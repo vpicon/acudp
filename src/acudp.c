@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -9,11 +10,7 @@
 #include "types.h"
 #include "format.h"
 
-
-const short ACSERVER_DEFAULT_PORT = 9996;
-
-
-int acudp_init(acudp_handle **handle_ptr)
+int acudp_init(acudp_handle **handle_ptr, const char* server_address, short server_port)
 {
     acudp_handle *acudp = (acudp_handle *) malloc(sizeof(acudp_handle));
     if (!acudp) {
@@ -23,8 +20,8 @@ int acudp_init(acudp_handle **handle_ptr)
     // Set up the server address
     memset(&acudp->server_address, 0, sizeof(acudp->server_address));
     acudp->server_address.sin_family      = AF_INET;                 // ipv4
-    acudp->server_address.sin_port        = htons(ACSERVER_DEFAULT_PORT);
-    acudp->server_address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);  // server in localhost
+    acudp->server_address.sin_port        = htons(server_port);
+    inet_pton(AF_INET, server_address, &(acudp->server_address.sin_addr.s_addr));
 
     // Create a datagram socket in the internet domain and use the // default protocol (UDP).
     if ((acudp->sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {

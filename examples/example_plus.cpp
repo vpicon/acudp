@@ -24,7 +24,7 @@ void print_car_info(const acudp_car_t& car) {
 
 
 int main() {
-    acudp::ACUDP acudp;
+    acudp::ACUDP acudp("127.0.0.1", 9996);
     auto setup_response = acudp.send_handshake();
     print_setup_response(setup_response);
     acudp.subscribe(acudp::SubscribeMode::update);
